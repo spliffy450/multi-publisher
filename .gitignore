@@ -1,0 +1,11 @@
+node_modules/
+out/
+dist/
+dist-electron/
+release/
+browser_profiles/
+profiles/
+data/
+*.db
+.DS_Store
+Thumbs.db

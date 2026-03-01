@@ -1,0 +1,80 @@
+{
+  "name": "multi-publisher",
+  "version": "0.1.0",
+  "description": "多平台内容发布工具",
+  "main": "./out/main/index.js",
+  "author": "atxin",
+  "scripts": {
+    "build:worker": "pnpm exec esbuild src/worker/index.ts --bundle --platform=node --outfile=out/worker/index.js --format=cjs --external:patchright --external:playwright-core",
+    "dev": "npm run build:worker && electron-vite dev",
+    "build": "npm run build:worker && electron-vite build",
+    "preview": "electron-vite preview",
+    "pack": "npm run build && electron-builder --dir",
+    "dist": "npm run build && electron-builder"
+  },
+  "dependencies": {
+    "@electron-toolkit/utils": "^4.0.0",
+    "better-sqlite3": "^12.6.2",
+    "playwright-core": "^1.50.0",
+    "react": "^19.2.4",
+    "react-dom": "^19.2.4",
+    "zustand": "^5.0.11"
+  },
+  "devDependencies": {
+    "@electron/rebuild": "^4.0.3",
+    "@tailwindcss/vite": "^4.2.1",
+    "@types/better-sqlite3": "^7.6.13",
+    "@types/node": "22.12.0",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "@vitejs/plugin-react": "^4.7.0",
+    "autoprefixer": "^10.4.27",
+    "electron": "33.3.1",
+    "electron-builder": "^26.8.1",
+    "electron-vite": "3.0.0",
+    "esbuild": "^0.27.3",
+    "postcss": "^8.5.6",
+    "tailwindcss": "^4.2.1",
+    "typescript": "5.7.3",
+    "vite": "6.2.0"
+  },
+  "build": {
+    "appId": "com.atxin.multi-publisher",
+    "productName": "多平台发布工具",
+    "directories": {
+      "output": "release"
+    },
+    "files": [
+      "out/**/*"
+    ],
+    "extraResources": [],
+    "asarUnpack": [
+      "node_modules/better-sqlite3/**"
+    ],
+    "win": {
+      "target": [
+        {
+          "target": "nsis",
+          "arch": [
+            "x64"
+          ]
+        }
+      ],
+      "icon": null
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": true,
+      "createDesktopShortcut": true,
+      "createStartMenuShortcut": true,
+      "shortcutName": "多平台发布工具"
+    }
+  },
+  "pnpm": {
+    "onlyBuiltDependencies": [
+      "electron",
+      "esbuild",
+      "better-sqlite3"
+    ]
+  }
+}
