@@ -1,3 +1,5 @@
+[中文](./README.zh-CN.md) | English
+
 # Multi-Publisher
 
 **One-click publish your videos to multiple Chinese social media platforms simultaneously.**
